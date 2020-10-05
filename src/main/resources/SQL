@@ -1,0 +1,11 @@
+CREATE TABLE Users(
+id INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(30) NOT NULL,
+email VARCHAR(30) NOT NULL,
+postcode VARCHAR(30) NOT NULL,
+age INT DEFAULT NULL,
+PRIMARY KEY (id));
+
+
+INSERT INTO Users (id, name, email, postcode, age)
+VALUES ('Thomas', 'thomas@thomas.com', 'pe100he', '21');
