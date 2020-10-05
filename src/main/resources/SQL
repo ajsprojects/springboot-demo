@@ -6,6 +6,5 @@ postcode VARCHAR(30) NOT NULL,
 age INT DEFAULT NULL,
 PRIMARY KEY (id));
 
-
 INSERT INTO Users (id, name, email, postcode, age)
-VALUES ('Thomas', 'thomas@thomas.com', 'pe100he', '21');
+VALUES ('Thomas', 'thomas@thomas.com', 'pe90hl', '21');
