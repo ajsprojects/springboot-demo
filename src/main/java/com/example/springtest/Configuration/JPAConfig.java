@@ -1,4 +1,4 @@
-package com.example.springtest.configuration;
+package com.example.springtest.Configuration;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;

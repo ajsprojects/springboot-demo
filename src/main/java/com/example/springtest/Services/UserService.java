@@ -1,10 +1,10 @@
-package com.example.springtest.Model;
+package com.example.springtest.Services;
 
 import com.example.springtest.Database.NewUser;
 import com.example.springtest.Database.UserRepository;
+import com.example.springtest.Database.Users;
 import com.example.springtest.Response.Response;
 import com.example.springtest.Response.ResponseUser;
-import com.example.springtest.Database.Users;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
