@@ -8,3 +8,10 @@ PRIMARY KEY (id));
 
 INSERT INTO Users (id, name, email, postcode, age)
 VALUES ('Thomas', 'thomas@thomas.com', 'pe90hl', '21');
+
+{
+"age": 30,
+"email": "polly@polly.com",
+"name": "polly",
+"postcode": "nr193dw"
+}
