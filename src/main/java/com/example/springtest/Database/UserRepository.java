@@ -1,5 +1,6 @@
 package com.example.springtest.Database;
 
+import com.example.springtest.Model.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,13 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository <Users, Integer>{
+public interface UserRepository extends CrudRepository <User, Integer>{
 
     @Query(value = "SELECT * FROM Users", nativeQuery = true)
-    List<Users> findAllUsers();
+    List<User> findAllUsers();
 
     @Query(value = "SELECT * FROM Users WHERE email=:email", nativeQuery = true)
-    Optional<Users> findByEmail(@Param("email") String email);
+    Optional<User> findByEmail(@Param("email") String email);
 
     @Modifying
     @Transactional

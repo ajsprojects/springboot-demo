@@ -1,4 +1,4 @@
-package com.example.springtest.Database;
+package com.example.springtest.Model;
 
 import lombok.Getter;
 import lombok.Setter;

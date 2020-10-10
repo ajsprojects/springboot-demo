@@ -1,4 +1,4 @@
-package com.example.springtest.Database;
+package com.example.springtest.Model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,10 +6,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Table(name = "users")
 @Getter
 @Setter
-public class Users implements Serializable {
+@Entity
+public class User implements Serializable {
     @Id
     private int id;
     private int age;

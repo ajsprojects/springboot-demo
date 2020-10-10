@@ -1,11 +1,9 @@
 package com.example.springtest.Services;
 
-import com.example.springtest.Database.NewUser;
+import com.example.springtest.Model.NewUser;
+import com.example.springtest.Model.User;
 import com.example.springtest.Database.UserRepository;
-import com.example.springtest.Database.Users;
 import com.example.springtest.Response.Response;
-import com.example.springtest.Response.ResponseUser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,68 +18,40 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public ResponseUser getUserById(int id) throws JsonProcessingException {
-        Optional<Users> users = userRepository.findById(id);
-        ResponseUser responseUser = new ResponseUser();
-        if(!users.isEmpty()) {
-            responseUser.setUser(users.get());
-            responseUser.setStatus(HttpStatus.OK);
-            return responseUser;
-        }
-        responseUser.setStatus(HttpStatus.NOT_FOUND);
-        return responseUser;
+    public Optional<User>  getUserById(int id) throws Exception {
+        Optional<User> user = userRepository.findById(id);
+        return user;
     }
 
-    public ResponseUser getUserByEmail(String email) {
-        Optional<Users> users = userRepository.findByEmail(email);
-        ResponseUser responseUser = new ResponseUser();
-        if(!users.isEmpty()) {
-            responseUser.setUser(users.get());
-            responseUser.setStatus(HttpStatus.OK);
-            return responseUser;
-        }
-        responseUser.setStatus(HttpStatus.NOT_FOUND);
-        return responseUser;
+    public Optional<User> getUserByEmail(String email) throws Exception {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user;
     }
 
-    public List<Users> getAllUsers() {
-        List<Users> users = userRepository.findAllUsers();
-        ResponseUser responseUser = new ResponseUser();
-        if(!users.isEmpty()) {
-            responseUser.setStatus(HttpStatus.OK);
-            return users;
-        }
-        responseUser.setStatus(HttpStatus.NOT_FOUND);
-        return (List<Users>) responseUser;
+    public List<User> getAllUsers() {
+        List<User> user = userRepository.findAllUsers();
+        return user;
     }
 
-    public Response deleteUserById(int id) {
-        Response response = new Response();
+    public HttpStatus deleteUserById(int id) {
         try {
             userRepository.deleteById(id);
-            response.setStatus(HttpStatus.OK);
-            response.setBody("Success");
+            return HttpStatus.OK;
         } catch (Exception e) {
-            response.setStatus(HttpStatus.NOT_FOUND);
-            response.setBody("Failure");
+            return HttpStatus.NOT_FOUND;
         }
-        return response;
     }
 
-    public Response addUser(String body) throws Exception {
+    public HttpStatus addUser(String body) throws Exception {
         Response response = new Response();
         ObjectMapper objectMapper = new ObjectMapper();
         NewUser newUser = objectMapper.readValue(body, NewUser.class);
-
         try {
             System.out.println("Inserting user into database: " + newUser.getName());
             userRepository.addUser(newUser.getName(), newUser.getEmail(), newUser.getPostcode(), newUser.getAge());
-            response.setStatus(HttpStatus.OK);
-            response.setBody("Success");
+            return HttpStatus.OK;
         } catch (Exception e) {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setBody("Failure");
+            return HttpStatus.BAD_REQUEST;
         }
-        return response;
     }
 }
