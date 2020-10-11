@@ -1,6 +1,5 @@
-package com.example.springtest;
+package com.example.springtest.Controller;
 
-import com.example.springtest.Controller.Controller;
 import com.example.springtest.Model.User;
 import com.example.springtest.Services.UserService;
 import com.example.springtest.TestData.CreateUser;
@@ -22,11 +21,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyString;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,8 +48,9 @@ public class ControllerTest {
 	}
 
 	@Test
-	public void contextLoads() throws Exception {
+	public void contextLoads() {
 		assertThat(mockMvc).isNotNull();
+		assertThat(controller).isNotNull();
 	}
 
 	@Test
@@ -77,7 +76,7 @@ public class ControllerTest {
 				.andExpect(status().is(404))
 				.andReturn().getResponse();
 
-		assertEquals(response.getContentAsString(), "");
+		assertEquals("", response.getContentAsString());
 	}
 
 	@Test
@@ -91,7 +90,7 @@ public class ControllerTest {
 				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
-		assertEquals(response.getContentAsString(), jsonResponse);
+		assertEquals(jsonResponse, response.getContentAsString());
 	}
 
 	@Test
@@ -104,13 +103,13 @@ public class ControllerTest {
 				.andExpect(status().is(404))
 				.andReturn().getResponse();
 
-		assertEquals(response.getContentAsString(), "");
+		assertEquals("", response.getContentAsString());
 	}
 
 	@Test
 	public void getAllUsers_Success() throws Exception {
 		CreateUser createUser = new CreateUser();
-		ArrayList<User> user = new ArrayList<User>();
+		ArrayList<User> user = new ArrayList<>();
 		user.add(createUser.createNewUser());
 		user.add(createUser.createNewUser());
 		Mockito.when(userService.getAllUsers()).thenReturn(user);
@@ -122,12 +121,12 @@ public class ControllerTest {
 				.andReturn().getResponse();
 
 		System.out.println(response.getContentAsString());
-		assertEquals(response.getContentAsString(), jsonResponse);
+		assertEquals(jsonResponse, response.getContentAsString());
 	}
 
 	@Test
 	public void getAllUsers_Empty() throws Exception {
-		ArrayList<User> user = new ArrayList<User>();
+		ArrayList<User> user = new ArrayList<>();
 		Mockito.when(userService.getAllUsers()).thenReturn(user);
 
 		MockHttpServletResponse response = mockMvc.perform(
@@ -136,7 +135,7 @@ public class ControllerTest {
 				.andReturn().getResponse();
 
 		System.out.println(response.getContentAsString());
-		assertEquals(response.getContentAsString(), "[]");
+		assertEquals("[]", response.getContentAsString());
 	}
 
 	@Test
