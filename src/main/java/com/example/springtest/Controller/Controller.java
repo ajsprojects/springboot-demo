@@ -1,7 +1,6 @@
 package com.example.springtest.Controller;
 
 import com.example.springtest.Model.User;
-import com.example.springtest.Response.Response;
 import com.example.springtest.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +33,6 @@ public class Controller {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-
     }
 
     @GetMapping("/getAllUsers")

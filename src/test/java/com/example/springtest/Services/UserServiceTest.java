@@ -45,7 +45,6 @@ class UserServiceTest {
 
     @Test
     void getUserById_Empty() {
-        User user = new User();
         when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
         Optional<User> response = userService.getUserById(14);
         verify(userRepository, times(1)).findById(anyInt());
@@ -54,7 +53,7 @@ class UserServiceTest {
 
     @Test
     void getUserByEmail_Success() {
-        User user  = new CreateUser().createNewUser();
+        User user = new CreateUser().createNewUser();
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
         Optional<User> response = userService.getUserByEmail("test@test.com");
         verify(userRepository, times(1)).findByEmail(anyString());
@@ -64,7 +63,6 @@ class UserServiceTest {
 
     @Test
     void getUserByEmail_Empty() {
-        User user = new User();
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         Optional<User> response = userService.getUserByEmail("test@test.com");
         verify(userRepository, times(1)).findByEmail(anyString());

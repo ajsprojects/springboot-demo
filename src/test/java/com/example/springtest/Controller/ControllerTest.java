@@ -157,7 +157,6 @@ public class ControllerTest {
 	@Test
 	public void addUser_Success() throws Exception {
 		Mockito.when(userService.addUser(anyString())).thenReturn(HttpStatus.OK);
-
 		String body = "{\n" +
 				"\"age\": 30,\n" +
 				"\"email\": \"polly@polly.com\",\n" +
@@ -172,12 +171,12 @@ public class ControllerTest {
 	@Test
 	public void addUser_Failure() throws Exception {
 		Mockito.when(userService.addUser(anyString())).thenReturn(HttpStatus.BAD_REQUEST);
-
 		String body = "{\n" +
 				"\"werwerw\": 30,\n" +
 				"\"emrwerwereail\": \"polly@polly.com\",\n" +
 				"\"rewrwe\": \"nr193dw\"\n" +
 				"}";
+
 		mockMvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(body))
 				.andExpect(status().is(400));
 	}
