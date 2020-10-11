@@ -120,7 +120,6 @@ public class ControllerTest {
 				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
-		System.out.println(response.getContentAsString());
 		assertEquals(jsonResponse, response.getContentAsString());
 	}
 
@@ -134,7 +133,6 @@ public class ControllerTest {
 				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
-		System.out.println(response.getContentAsString());
 		assertEquals("[]", response.getContentAsString());
 	}
 
@@ -180,7 +178,5 @@ public class ControllerTest {
 		mockMvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(body))
 				.andExpect(status().is(400));
 	}
-
-
 
 }
