@@ -11,5 +11,5 @@ public class SpringTestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringTestApplication.class, args);
 	}
-
+	//http://localhost:8080/swagger-ui/index.html
 }
