@@ -31,7 +31,6 @@ dependencies {
 	compile group: 'com.h2database', name: 'h2', version: '1.4.200'
 	compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.2'
 	compile group: 'org.springdoc', name: 'springdoc-openapi-data-rest', version: '1.5.2'
-
 }
 
 test {

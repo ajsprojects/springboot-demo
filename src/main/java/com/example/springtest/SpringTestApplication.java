@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Spring Boot demo API",
-		description = "Demo API",
+		description = "Demo API using in memory H2 database",
 		version = "2.0"))
 public class SpringTestApplication implements CommandLineRunner {
 
@@ -24,7 +24,7 @@ public class SpringTestApplication implements CommandLineRunner {
 	//http://localhost:8080/swagger-ui.html
 
 	@Override
-	public void run(String...args)  throws Exception {
+	public void run(String...args) {
 		repository.save(new User(22 , "test", "test@test.com", "le130e"));
 		repository.save(new User(26 , "test2", "test2@test2.com", "ng18jr3"));
 		repository.save(new User(18 , "test3", "tes3t@test3.com", "pe100fe"));
