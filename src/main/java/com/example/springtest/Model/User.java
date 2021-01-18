@@ -3,18 +3,35 @@ package com.example.springtest.Model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.Min;
 
-@Table(name = "users")
 @Getter
 @Setter
 @Entity
-public class User implements Serializable {
+public class User {
     @Id
-    private int id;
-    private int age;
+    @GeneratedValue
+    private Integer id;
+    @Column
+    private Integer age;
+    @Column
     private String name;
+    @Column
     private String email;
+    @Column
     private String postcode;
+
+    protected User() {
+    }
+
+    public User(Integer age, String name, String email, String postcode) {
+        this.age = age;
+        this.name = name;
+        this.email = email;
+        this.postcode = postcode;
+    }
 }
