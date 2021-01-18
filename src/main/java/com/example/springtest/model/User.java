@@ -1,4 +1,4 @@
-package com.example.springtest.Model;
+package com.example.springtest.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Min;
 
 @Getter
 @Setter

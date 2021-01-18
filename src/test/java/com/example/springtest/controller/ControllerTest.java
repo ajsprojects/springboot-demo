@@ -1,7 +1,7 @@
-package com.example.springtest.Controller;
+package com.example.springtest.controller;
 
-import com.example.springtest.Model.User;
-import com.example.springtest.Services.UserService;
+import com.example.springtest.model.User;
+import com.example.springtest.services.UserService;
 import com.example.springtest.TestData.CreateUser;
 import org.junit.Before;
 import org.junit.Test;

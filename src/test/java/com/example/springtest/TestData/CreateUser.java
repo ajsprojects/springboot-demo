@@ -1,6 +1,6 @@
 package com.example.springtest.TestData;
 
-import com.example.springtest.Model.User;
+import com.example.springtest.model.User;
 
 public class CreateUser {
 

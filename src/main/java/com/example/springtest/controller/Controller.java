@@ -1,7 +1,7 @@
-package com.example.springtest.Controller;
+package com.example.springtest.controller;
 
-import com.example.springtest.Model.User;
-import com.example.springtest.Services.UserService;
+import com.example.springtest.model.User;
+import com.example.springtest.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class Controller {
 
     @GetMapping("/users/{id}")
     @Operation(summary = "Get user by ID")
-    public ResponseEntity getUserById(@PathVariable(value = "id") int id) throws Exception {
+    public ResponseEntity getUserById(@PathVariable(value = "id") int id) {
         System.out.println("Getting user by ID: " + id);
         Optional<User> user = userService.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -30,7 +30,7 @@ public class Controller {
 
     @GetMapping("/users/age/{age}")
     @Operation(summary = "Get users by age")
-    public ResponseEntity getUsersByAge(@PathVariable(value = "age") int age) throws Exception {
+    public ResponseEntity getUsersByAge(@PathVariable(value = "age") int age) {
         System.out.println("Getting user by ID: " + age);
         List<User> user = userService.getUsersByAge(age);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -38,7 +38,7 @@ public class Controller {
 
     @GetMapping("/users/email/{email:.*}")
     @Operation(summary = "Get user by email")
-    public ResponseEntity getUserByEmail(@PathVariable(value = "email") String email) throws Exception {
+    public ResponseEntity getUserByEmail(@PathVariable(value = "email") String email) {
         System.out.println("Getting user by Email: " + email);
         Optional<User> user = userService.getUserByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -46,7 +46,7 @@ public class Controller {
 
     @DeleteMapping("/users/{id}")
     @Operation(summary = "Delete user by ID")
-    public ResponseEntity deleteUserById(@PathVariable(value = "id") int id)  throws Exception {
+    public ResponseEntity deleteUserById(@PathVariable(value = "id") int id)  {
         System.out.println("Deleting user with ID: " + id);
         if(userService.deleteUserById(id)) {
             return new ResponseEntity<>("Success", HttpStatus.OK);
@@ -57,14 +57,14 @@ public class Controller {
 
     @GetMapping("/users")
     @Operation(summary = "Get all users")
-    public ResponseEntity getAllUsers()  throws Exception {
+    public ResponseEntity getAllUsers()  {
         System.out.println("Finding all users");
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @PostMapping("/users")
     @Operation(summary = "Add a new user")
-    public ResponseEntity addUser(@RequestBody @Valid String request) throws Exception {
+    public ResponseEntity addUser(@RequestBody @Valid String request)  {
         System.out.println("Request: " + request);
         if(userService.addUser(request)) {
             return new ResponseEntity<>("Success", HttpStatus.OK);

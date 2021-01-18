@@ -1,7 +1,7 @@
 package com.example.springtest;
 
-import com.example.springtest.Database.UserRepository;
-import com.example.springtest.Model.User;
+import com.example.springtest.database.Repository;
+import com.example.springtest.model.User;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +16,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringTestApplication implements CommandLineRunner {
 
 	@Autowired
-	UserRepository userRepository;
+	Repository repository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringTestApplication.class, args);
-	}	//http://localhost:8080/swagger-ui.html
+	}
+	//http://localhost:8080/swagger-ui.html
 
 	@Override
 	public void run(String...args)  throws Exception {
-		userRepository.save(new User(22 , "test", "test@test.com", "le130e"));
-		userRepository.save(new User(26 , "test2", "test2@test2.com", "ng18jr3"));
-		userRepository.save(new User(18 , "test3", "tes3t@test3.com", "pe100fe"));
+		repository.save(new User(22 , "test", "test@test.com", "le130e"));
+		repository.save(new User(26 , "test2", "test2@test2.com", "ng18jr3"));
+		repository.save(new User(18 , "test3", "tes3t@test3.com", "pe100fe"));
 	}
 }

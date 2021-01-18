@@ -1,7 +1,7 @@
-package com.example.springtest.Services;
+package com.example.springtest.services;
 
-import com.example.springtest.Database.UserRepository;
-import com.example.springtest.Model.User;
+import com.example.springtest.database.Repository;
+import com.example.springtest.model.User;
 import com.example.springtest.TestData.CreateUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,49 +23,49 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     @Mock
-    private UserRepository userRepository;
+    private Repository repository;
 
     @InjectMocks
     private UserService userService;
 
     @Test
     void init() {
-        assertThat(userRepository).isNotNull();
+        assertThat(repository).isNotNull();
     }
 
     @Test
     void getUserById_Success() {
         User user  = new CreateUser().createNewUser();
-        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
+        when(repository.findById(anyInt())).thenReturn(Optional.of(user));
         Optional<User> response = userService.getUserById(14);
-        verify(userRepository, times(1)).findById(anyInt());
+        verify(repository, times(1)).findById(anyInt());
         assertThat(response).isPresent();
         assertEquals(14, response.get().getId());
     }
 
     @Test
     void getUserById_Empty() {
-        when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(repository.findById(anyInt())).thenReturn(Optional.empty());
         Optional<User> response = userService.getUserById(14);
-        verify(userRepository, times(1)).findById(anyInt());
+        verify(repository, times(1)).findById(anyInt());
         assertThat(response).isEmpty();
     }
 
     @Test
     void getUserByEmail_Success() {
         User user = new CreateUser().createNewUser();
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+        when(repository.findByEmail(anyString())).thenReturn(Optional.of(user));
         Optional<User> response = userService.getUserByEmail("test@test.com");
-        verify(userRepository, times(1)).findByEmail(anyString());
+        verify(repository, times(1)).findByEmail(anyString());
         assertThat(response).isPresent();
         assertEquals("test@test.com", response.get().getEmail());
     }
 
     @Test
     void getUserByEmail_Empty() {
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(repository.findByEmail(anyString())).thenReturn(Optional.empty());
         Optional<User> response = userService.getUserByEmail("test@test.com");
-        verify(userRepository, times(1)).findByEmail(anyString());
+        verify(repository, times(1)).findByEmail(anyString());
         assertThat(response).isEmpty();
     }
 
@@ -74,26 +74,26 @@ class UserServiceTest {
         User user = new CreateUser().createNewUser();
         ArrayList<User> userList  = new ArrayList<>();
         userList.add(user);
-        when(userRepository.findAllUsers()).thenReturn(userList);
+        when(repository.findAllUsers()).thenReturn(userList);
         List<User> response = userService.getAllUsers();
-        verify(userRepository, times(1)).findAllUsers();
+        verify(repository, times(1)).findAllUsers();
         assertEquals(1, response.size());
         assertEquals(14, response.get(0).getId());
     }
 
     @Test
     void deleteUserById_Success() {
-        doNothing().when(userRepository).deleteById(anyInt());
+        doNothing().when(repository).deleteById(anyInt());
         HttpStatus status = userService.deleteUserById(anyInt());
-        verify(userRepository, times(1)).deleteById(anyInt());
+        verify(repository, times(1)).deleteById(anyInt());
         assertEquals(HttpStatus.OK, status);
     }
 
     @Test
     void deleteUserById_Failure() {
-        doThrow(new IllegalArgumentException()).when(userRepository).deleteById(anyInt());
+        doThrow(new IllegalArgumentException()).when(repository).deleteById(anyInt());
         HttpStatus status = userService.deleteUserById(anyInt());
-        verify(userRepository, times(1)).deleteById(anyInt());
+        verify(repository, times(1)).deleteById(anyInt());
         assertEquals(HttpStatus.NOT_FOUND, status);
     }
 
@@ -106,9 +106,9 @@ class UserServiceTest {
                 "\"postcode\": \"nr193dw\"\n" +
                 "}";
 
-        doNothing().when(userRepository).addUser(anyString(), anyString(), anyString(), anyInt());
+        doNothing().when(repository).addUser(anyString(), anyString(), anyString(), anyInt());
         HttpStatus response = userService.addUser(body);
-        verify(userRepository, times(1)).addUser(anyString(), anyString(), anyString(), anyInt());
+        verify(repository, times(1)).addUser(anyString(), anyString(), anyString(), anyInt());
         assertEquals(HttpStatus.OK, response);
     }
 
@@ -121,7 +121,7 @@ class UserServiceTest {
                 "\"postcode\": \"nr193dw\"\n" +
                 "}";
 
-        doThrow(new IllegalArgumentException()).when(userRepository).addUser(anyString(), anyString(), anyString(), anyInt());
+        doThrow(new IllegalArgumentException()).when(repository).addUser(anyString(), anyString(), anyString(), anyInt());
         HttpStatus response = userService.addUser(body);
         assertEquals(HttpStatus.BAD_REQUEST, response);
     }
