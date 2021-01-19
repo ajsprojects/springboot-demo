@@ -2,7 +2,7 @@ package com.example.springtest.controller;
 
 import com.example.springtest.model.User;
 import com.example.springtest.services.UserService;
-import com.example.springtest.TestData.CreateUser;
+import com.example.springtest.testdata.TestData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,8 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
@@ -55,12 +53,11 @@ public class ControllerTest {
 
 	@Test
 	public void getUserById_Success() throws Exception {
-		CreateUser createUser = new CreateUser();
-		Mockito.when(userService.getUserById(anyInt())).thenReturn(java.util.Optional.ofNullable(createUser.createNewUser()));
-		String jsonResponse = "{\"id\":14,\"age\":14,\"name\":\"Test\",\"email\":\"test@test.com\",\"postcode\":\"pe914f\"}";
+		Mockito.when(userService.getUserById(anyInt())).thenReturn(Optional.of(TestData.createMockUser()));
+		String jsonResponse = "{\"id\":1,\"age\":18,\"name\":\"test\",\"email\":\"test@test.com\",\"postcode\":\"le1084j\"}";
 
 		MockHttpServletResponse response = mockMvc.perform(
-				get("/getUserById/14").accept(MediaType.APPLICATION_JSON))
+				get("/users/1").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
@@ -68,25 +65,24 @@ public class ControllerTest {
 	}
 
 	@Test
-	public void getUserById_Failure() throws Exception {
+	public void getUserById_Empty() throws Exception {
 		Mockito.when(userService.getUserById(anyInt())).thenReturn(Optional.empty());
 
 		MockHttpServletResponse response = mockMvc.perform(
-				get("/getUserById/14").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(404))
+				get("/users/11").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
-		assertEquals("", response.getContentAsString());
+		assertEquals("null", response.getContentAsString());
 	}
 
 	@Test
 	public void getUserByEmail_Success() throws Exception {
-		CreateUser createUser = new CreateUser();
-		Mockito.when(userService.getUserByEmail(anyString())).thenReturn(java.util.Optional.ofNullable(createUser.createNewUser()));
-		String jsonResponse = "{\"id\":14,\"age\":14,\"name\":\"Test\",\"email\":\"test@test.com\",\"postcode\":\"pe914f\"}";
+		Mockito.when(userService.getUserByEmail(anyString())).thenReturn(Optional.of(TestData.createMockUser()));
+		String jsonResponse = "{\"id\":1,\"age\":18,\"name\":\"test\",\"email\":\"test@test.com\",\"postcode\":\"le1084j\"}";
 
 		MockHttpServletResponse response = mockMvc.perform(
-				get("/getUserByEmail/test@test").accept(MediaType.APPLICATION_JSON))
+				get("/users/email/test@test").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
@@ -94,29 +90,27 @@ public class ControllerTest {
 	}
 
 	@Test
-	public void getUserByEmail_Failure() throws Exception {
-
+	public void getUserByEmail_Empty() throws Exception {
 		Mockito.when(userService.getUserByEmail(anyString())).thenReturn(Optional.empty());
 
 		MockHttpServletResponse response = mockMvc.perform(
-				get("/getUserByEmail/test@test.com").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(404))
+				get("/users/email/test@test").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
-		assertEquals("", response.getContentAsString());
+		assertEquals("null", response.getContentAsString());
 	}
 
 	@Test
 	public void getAllUsers_Success() throws Exception {
-		CreateUser createUser = new CreateUser();
 		ArrayList<User> user = new ArrayList<>();
-		user.add(createUser.createNewUser());
-		user.add(createUser.createNewUser());
+		user.add(TestData.createMockUser());
+		user.add(TestData.createMockUser());
 		Mockito.when(userService.getAllUsers()).thenReturn(user);
 		
-		String jsonResponse = "[{\"id\":14,\"age\":14,\"name\":\"Test\",\"email\":\"test@test.com\",\"postcode\":\"pe914f\"},{\"id\":14,\"age\":14,\"name\":\"Test\",\"email\":\"test@test.com\",\"postcode\":\"pe914f\"}]";
+		String jsonResponse = "[{\"id\":1,\"age\":18,\"name\":\"test\",\"email\":\"test@test.com\",\"postcode\":\"le1084j\"},{\"id\":1,\"age\":18,\"name\":\"test\",\"email\":\"test@test.com\",\"postcode\":\"le1084j\"}]";
 		MockHttpServletResponse response = mockMvc.perform(
-				get("/getAllUsers").accept(MediaType.APPLICATION_JSON))
+				get("/users").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
@@ -129,7 +123,7 @@ public class ControllerTest {
 		Mockito.when(userService.getAllUsers()).thenReturn(user);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				get("/getAllUsers").accept(MediaType.APPLICATION_JSON))
+				get("/users").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(200))
 				.andReturn().getResponse();
 
@@ -138,23 +132,23 @@ public class ControllerTest {
 
 	@Test
 	public void deleteByUserId_Success() throws Exception {
-		Mockito.when(userService.deleteUserById(anyInt())).thenReturn(HttpStatus.OK);
+		Mockito.when(userService.deleteUserById(anyInt())).thenReturn(true);
 
-	  	mockMvc.perform(post("/deleteUserById/14"))
+	  	mockMvc.perform(delete("/users/1"))
 				.andExpect(status().is(200));
 	}
 
 	@Test
 	public void deleteByUserId_Failure() throws Exception {
-		Mockito.when(userService.deleteUserById(anyInt())).thenReturn(HttpStatus.NOT_FOUND);
+		Mockito.when(userService.deleteUserById(anyInt())).thenReturn(false);
 
-		mockMvc.perform(post("/deleteUserById/14"))
-				.andExpect(status().is(404));
+		mockMvc.perform(delete("/users/11"))
+				.andExpect(status().is(400));
 	}
 
 	@Test
 	public void addUser_Success() throws Exception {
-		Mockito.when(userService.addUser(anyString())).thenReturn(HttpStatus.OK);
+		Mockito.when(userService.addUser(anyString())).thenReturn(true);
 		String body = "{\n" +
 				"\"age\": 30,\n" +
 				"\"email\": \"polly@polly.com\",\n" +
@@ -162,20 +156,20 @@ public class ControllerTest {
 				"\"postcode\": \"nr193dw\"\n" +
 				"}";
 
-		mockMvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(body))
+		mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(body))
 				.andExpect(status().is(200));
 	}
 
 	@Test
 	public void addUser_Failure() throws Exception {
-		Mockito.when(userService.addUser(anyString())).thenReturn(HttpStatus.BAD_REQUEST);
+		Mockito.when(userService.addUser(anyString())).thenReturn(false);
 		String body = "{\n" +
 				"\"werwerw\": 30,\n" +
 				"\"emrwerwereail\": \"polly@polly.com\",\n" +
 				"\"rewrwe\": \"nr193dw\"\n" +
 				"}";
 
-		mockMvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(body))
+		mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(body))
 				.andExpect(status().is(400));
 	}
 

@@ -10,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "Spring Boot demo API",
+@OpenAPIDefinition(info = @Info(title = "Spring Boot Demo API",
 		description = "Demo API using in memory H2 database",
 		version = "2.0"))
 public class SpringTestApplication implements CommandLineRunner {

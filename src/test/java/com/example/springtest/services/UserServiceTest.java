@@ -2,13 +2,12 @@ package com.example.springtest.services;
 
 import com.example.springtest.database.Repository;
 import com.example.springtest.model.User;
-import com.example.springtest.TestData.CreateUser;
+import com.example.springtest.testdata.TestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,26 +34,24 @@ class UserServiceTest {
 
     @Test
     void getUserById_Success() {
-        User user  = new CreateUser().createNewUser();
-        when(repository.findById(anyInt())).thenReturn(Optional.of(user));
+        when(repository.findById(anyInt())).thenReturn(Optional.of(TestData.createMockUser()));
         Optional<User> response = userService.getUserById(14);
         verify(repository, times(1)).findById(anyInt());
         assertThat(response).isPresent();
-        assertEquals(14, response.get().getId());
+        assertEquals(1, response.get().getId());
     }
 
     @Test
     void getUserById_Empty() {
         when(repository.findById(anyInt())).thenReturn(Optional.empty());
-        Optional<User> response = userService.getUserById(14);
+        Optional<User> response = userService.getUserById(1);
         verify(repository, times(1)).findById(anyInt());
         assertThat(response).isEmpty();
     }
 
     @Test
     void getUserByEmail_Success() {
-        User user = new CreateUser().createNewUser();
-        when(repository.findByEmail(anyString())).thenReturn(Optional.of(user));
+        when(repository.findByEmail(anyString())).thenReturn(Optional.of(TestData.createMockUser()));
         Optional<User> response = userService.getUserByEmail("test@test.com");
         verify(repository, times(1)).findByEmail(anyString());
         assertThat(response).isPresent();
@@ -71,58 +68,56 @@ class UserServiceTest {
 
     @Test
     void getAllUsers() {
-        User user = new CreateUser().createNewUser();
         ArrayList<User> userList  = new ArrayList<>();
-        userList.add(user);
-        when(repository.findAllUsers()).thenReturn(userList);
-        List<User> response = userService.getAllUsers();
-        verify(repository, times(1)).findAllUsers();
-        assertEquals(1, response.size());
-        assertEquals(14, response.get(0).getId());
+        userList.add(TestData.createMockUser());
+        userList.add(TestData.createMockUser());
+        when(repository.findAll()).thenReturn(userList);
+        Iterable<User> response = userService.getAllUsers();
+        verify(repository, times(1)).findAll();
+        assertEquals(2, response.spliterator().getExactSizeIfKnown());
     }
 
     @Test
     void deleteUserById_Success() {
         doNothing().when(repository).deleteById(anyInt());
-        HttpStatus status = userService.deleteUserById(anyInt());
+        boolean status = userService.deleteUserById(anyInt());
         verify(repository, times(1)).deleteById(anyInt());
-        assertEquals(HttpStatus.OK, status);
+        assertEquals(true, status);
     }
 
     @Test
     void deleteUserById_Failure() {
         doThrow(new IllegalArgumentException()).when(repository).deleteById(anyInt());
-        HttpStatus status = userService.deleteUserById(anyInt());
+        boolean status = userService.deleteUserById(anyInt());
         verify(repository, times(1)).deleteById(anyInt());
-        assertEquals(HttpStatus.NOT_FOUND, status);
+        assertEquals(false, status);
     }
 
     @Test
     void addUser_Success() {
         String body = "{\n" +
                 "\"age\": 30,\n" +
-                "\"email\": \"polly@polly.com\",\n" +
-                "\"name\": \"polly\",\n" +
+                "\"email\": \"test@test.com\",\n" +
+                "\"name\": \"test\",\n" +
                 "\"postcode\": \"nr193dw\"\n" +
                 "}";
 
-        doNothing().when(repository).addUser(anyString(), anyString(), anyString(), anyInt());
-        HttpStatus response = userService.addUser(body);
-        verify(repository, times(1)).addUser(anyString(), anyString(), anyString(), anyInt());
-        assertEquals(HttpStatus.OK, response);
+        when(repository.save(any())).thenReturn(any());
+        boolean response = userService.addUser(body);
+        verify(repository, times(1)).save(any(User.class));
+        assertEquals(true, response);
     }
 
     @Test
     void addUser_Failure() {
-        String body = "{\n" +
-                "\"age\": 30,\n" +
+        String request = "{\n" +
+                "\"age\": 9999,\n" +
                 "\"email\": \"polly@polly.com\",\n" +
-                "\"name\": \"polly\",\n" +
                 "\"postcode\": \"nr193dw\"\n" +
                 "}";
 
-        doThrow(new IllegalArgumentException()).when(repository).addUser(anyString(), anyString(), anyString(), anyInt());
-        HttpStatus response = userService.addUser(body);
-        assertEquals(HttpStatus.BAD_REQUEST, response);
+        doThrow(new IllegalArgumentException()).when(repository).save(any(User.class));
+        boolean response = userService.addUser(request);
+        assertEquals(false, response);
     }
 }
