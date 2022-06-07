@@ -70,7 +70,7 @@ public class HolidayController {
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public List<BookingResponse> getAllHolidays() {
+    public List<BookingResponse> getAllBooking() {
         return holidayService.getAllBookings();
     }
 
@@ -84,6 +84,6 @@ public class HolidayController {
     })
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public List<BookingResponse> cancelBooking() {
-        return holidayService.getAllBookings();
+        return null; //not implemented yet
     }
 }

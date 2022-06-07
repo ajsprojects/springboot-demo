@@ -3,12 +3,9 @@ package com.example.springtest.services;
 import com.example.springtest.database.CustomerRepository;
 import com.example.springtest.exception.UserException;
 import com.example.springtest.model.Customer;
-import com.example.springtest.web.dto.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Slf4j
 @Service

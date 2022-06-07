@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -53,6 +54,7 @@ public class HolidayService {
                     if(Optional.ofNullable(country).isPresent()) {
                         return holidayFilter.getCountryChoice().equals(h.getCountry()) ? true : false;
                     }
+                    //implement rest of filters
                     return true;
                 })
                 .forEach(h -> response.add(buildHoliday(h)));
@@ -84,12 +86,17 @@ public class HolidayService {
     }
 
     public List<BookingResponse> getAllBookings() {
-        List<BookingResponse> response = new ArrayList<>();
-
         List<Booking> bookings = bookingRepository.findAll();
-        response.add(BookingResponse.builder().bookingStatus(bookings.get(0).getBookingStatus()).holiday(Holiday.builder().flightsIncluded(true).build()).build());
 
-        return response;
+        return bookings.stream().filter(Objects::nonNull).map(holiday ->
+                BookingResponse.builder().bookingReference(holiday.getBookingReference())
+                        .bookingDateTime(holiday.getBookingDateTime())
+                        .startDate(holiday.getStartDate())
+                        .endDate(holiday.getEndDate())
+                        .bookingStatus(holiday.getBookingStatus())
+                        .holiday(holidayRepository.getById(holiday.getCustomerId()))
+                        .build())
+                .collect(Collectors.toList());
     }
 }
 
