@@ -1,0 +1,36 @@
+DROP TABLE CUSTOMER;
+DROP TABLE HOLIDAY;
+DROP TABLE BOOKING;
+
+CREATE TABLE CUSTOMER (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  age INT NOT NULL,
+  name VARCHAR(250) NOT NULL,
+  email VARCHAR(250) DEFAULT NULL,
+  postcode VARCHAR(250) DEFAULT NULL
+);
+
+
+CREATE TABLE HOLIDAY (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(250) NOT NULL,
+  description VARCHAR(250) NOT NULL,
+  minimum_age INT NOT NULL,
+  country VARCHAR(250) NOT NULL,
+  price DOUBLE DEFAULT NULL,
+  flights_included VARCHAR(250),
+  rating INT
+);
+
+
+CREATE TABLE BOOKING (
+  booking_reference INT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  holiday_id INT NOT NULL,
+  booking_date_time TIMESTAMP NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  booking_status VARCHAR(250) NOT NULL
+);
+
+

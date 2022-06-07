@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.4.RELEASE'
+	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 }
@@ -25,12 +25,12 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.6.4'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.2'
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.3.4.RELEASE'
-	compile group: 'com.h2database', name: 'h2', version: '1.4.200'
-	compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.2'
-	compile group: 'org.springdoc', name: 'springdoc-openapi-data-rest', version: '1.5.2'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+	compile group: 'com.h2database', name: 'h2', version: '2.0.202'
+	compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.6'
 }
 
 test {

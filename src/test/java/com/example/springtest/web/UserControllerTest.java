@@ -1,6 +1,6 @@
-package com.example.springtest.controller;
+package com.example.springtest.web;
 
-import com.example.springtest.model.User;
+import com.example.springtest.model.Customer;
 import com.example.springtest.services.UserService;
 import com.example.springtest.testdata.TestData;
 import org.junit.Before;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @RunWith(MockitoJUnitRunner.class)
-public class ControllerTest {
+public class UserControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -38,17 +38,17 @@ public class ControllerTest {
 	private UserService userService;
 
 	@InjectMocks
-	private Controller controller;
+	private UserController userController;
 
 	@Before
 	public void setup() {
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 	}
 
 	@Test
 	public void contextLoads() {
 		assertThat(mockMvc).isNotNull();
-		assertThat(controller).isNotNull();
+		assertThat(userController).isNotNull();
 	}
 
 	@Test
@@ -103,10 +103,10 @@ public class ControllerTest {
 
 	@Test
 	public void getAllUsers_Success() throws Exception {
-		ArrayList<User> user = new ArrayList<>();
-		user.add(TestData.createMockUser());
-		user.add(TestData.createMockUser());
-		Mockito.when(userService.getAllUsers()).thenReturn(user);
+		ArrayList<Customer> customer = new ArrayList<>();
+		customer.add(TestData.createMockUser());
+		customer.add(TestData.createMockUser());
+		Mockito.when(userService.getAllUsers()).thenReturn(customer);
 		
 		String jsonResponse = "[{\"id\":1,\"age\":18,\"name\":\"test\",\"email\":\"test@test.com\",\"postcode\":\"le1084j\"},{\"id\":1,\"age\":18,\"name\":\"test\",\"email\":\"test@test.com\",\"postcode\":\"le1084j\"}]";
 		MockHttpServletResponse response = mockMvc.perform(
@@ -119,8 +119,8 @@ public class ControllerTest {
 
 	@Test
 	public void getAllUsers_Empty() throws Exception {
-		ArrayList<User> user = new ArrayList<>();
-		Mockito.when(userService.getAllUsers()).thenReturn(user);
+		ArrayList<Customer> customer = new ArrayList<>();
+		Mockito.when(userService.getAllUsers()).thenReturn(customer);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				get("/users").accept(MediaType.APPLICATION_JSON))
