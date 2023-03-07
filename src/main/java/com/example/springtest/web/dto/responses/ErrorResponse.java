@@ -1,4 +1,4 @@
-package com.example.springtest.web.dto;
+package com.example.springtest.web.dto.responses;
 
 import lombok.Builder;
 import lombok.Value;
@@ -6,5 +6,5 @@ import lombok.Value;
 @Value
 @Builder
 public class ErrorResponse {
-    private final String errorMessage;
+    String errorMessage;
 }

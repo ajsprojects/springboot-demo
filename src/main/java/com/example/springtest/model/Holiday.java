@@ -17,21 +17,21 @@ public class Holiday {
 
     @Column
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name="name")
+    @Column(name = "name")
     private String holidayName;
     @Column
     private String description;
     @Column
     @Enumerated(EnumType.STRING)
     private Country country;
-    @Column(name="minimum_age")
+    @Column(name = "minimum_age")
     private int minimumAge;
     @Column
     private Double price;
-    @Column(name="flights_included")
-    @Type(type="true_false")
+    @Column(name = "flights_included")
+    @Type(type = "true_false")
     private boolean flightsIncluded;
     @Column
     private int rating;

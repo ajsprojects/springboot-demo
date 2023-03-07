@@ -9,14 +9,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Constraint(validatedBy = PostCodeValidation.class)
-@Target({ TYPE, FIELD, CONSTRUCTOR})
+@Constraint(validatedBy = CustomerDetailsValidator.class)
+@Target({FIELD, METHOD, CONSTRUCTOR})
 @Retention(RUNTIME)
 @Documented
-public @interface ValidPostCode {
-    String message() default "Invalid postcode";
-
+public @interface CustomerDetailsMatch {
+    String message() default "Details do not match";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

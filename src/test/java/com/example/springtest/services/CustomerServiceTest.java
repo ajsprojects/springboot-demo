@@ -1,21 +1,25 @@
 package com.example.springtest.services;
 
 import com.example.springtest.database.CustomerRepository;
+import com.example.springtest.exception.UserException;
 import com.example.springtest.model.Customer;
-import com.example.springtest.testdata.TestData;
+import com.example.springtest.model.Holiday;
+import com.example.springtest.web.dto.responses.CustomerDetailsResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
+import static com.example.springtest.helper.Helper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
@@ -23,8 +27,12 @@ class CustomerServiceTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private BookingService bookingService;
+    @Mock
+    private HolidayService holidayService;
     @InjectMocks
-    private UserService userService;
+    private CustomerService customerService;
 
     @Test
     void init() {
@@ -32,91 +40,39 @@ class CustomerServiceTest {
     }
 
     @Test
-    void getUserById_Success() {
-        when(customerRepository.findById(anyInt())).thenReturn(Optional.of(TestData.createMockUser()));
-        Optional<Customer> response = userService.getUserById(14);
-        verify(customerRepository, times(1)).findById(anyInt());
-        assertThat(response).isPresent();
-        assertEquals(1, response.get().getId());
+    void getCustomerDetailsByIdReturnsMappedResponseWithBooking() {
+        Customer customer = new Customer(1, 21, "timmy", "email@email.com", buildingAddressDatabaseEntity());
+        when(customerRepository.findById(anyInt())).thenReturn(Optional.of(customer));
+        when(bookingService.getBookingDetails(1)).thenReturn(Collections.singletonList(buildBookingDatabaseEntity()));
+        when(holidayService.getHolidayDetails(10)).thenReturn(Optional.of(Holiday.builder().holidayName("holiday").build()));
+        CustomerDetailsResponse actual = customerService.getCustomerDetailsById(1);
+        assertEquals(buildCustomerDetailsResponseWithBooking(), actual);
     }
 
     @Test
-    void getUserById_Empty() {
-        when(customerRepository.findById(anyInt())).thenReturn(Optional.empty());
-        Optional<Customer> response = userService.getUserById(1);
-        verify(customerRepository, times(1)).findById(anyInt());
-        assertThat(response).isEmpty();
+    void getCustomerDetailsByIdThrowsExceptionWhenNotFound() {
+        UserException exception = assertThrows(UserException.class, () -> customerService.getCustomerDetailsById(1));
+        assertEquals("Exception finding user: 1", exception.getMessage());
     }
 
     @Test
-    void getUserByEmail_Success() {
-        when(customerRepository.findByEmail(anyString())).thenReturn(Optional.of(TestData.createMockUser()));
-        Optional<Customer> response = userService.getUserByEmail("test@test.com");
-        verify(customerRepository, times(1)).findByEmail(anyString());
-        assertThat(response).isPresent();
-        assertEquals("test@test.com", response.get().getEmail());
+    void getCustomerDetailsByEmailReturnsMappedResponseWithBooking() {
+        Customer customer = new Customer(1, 21, "timmy", "email@email.com", buildingAddressDatabaseEntity());
+        when(customerRepository.findByEmail("email@email.com")).thenReturn(Optional.of(customer));
+        when(bookingService.getBookingDetails(1)).thenReturn(Collections.singletonList(buildBookingDatabaseEntity()));
+        when(holidayService.getHolidayDetails(10)).thenReturn(Optional.of(Holiday.builder().holidayName("holiday").build()));
+        CustomerDetailsResponse actual = customerService.getCustomerDetailsByEmail("email@email.com");
+        assertEquals(buildCustomerDetailsResponseWithBooking(), actual);
     }
 
     @Test
-    void getUserByEmail_Empty() {
-        when(customerRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        Optional<Customer> response = userService.getUserByEmail("test@test.com");
-        verify(customerRepository, times(1)).findByEmail(anyString());
-        assertThat(response).isEmpty();
+    void getCustomerDetailsByIdReturnsMappedResponseNoBooking() {
+        CustomerDetailsResponse expected = CustomerDetailsResponse.builder().age(21).email("email@email.com").name("timmy").address(buildAddress()).bookings(Collections.emptyList()).build();
+        Customer customer = new Customer(1, 21, "timmy", "email@email.com", buildingAddressDatabaseEntity());
+        when(customerRepository.findById(anyInt())).thenReturn(Optional.of(customer));
+        when(bookingService.getBookingDetails(1)).thenReturn(Collections.emptyList());
+        CustomerDetailsResponse actual = customerService.getCustomerDetailsById(1);
+        assertEquals(expected, actual);
     }
 
-    @Test
-    void getAllUsers() {
-        ArrayList<Customer> customerList = new ArrayList<>();
-        customerList.add(TestData.createMockUser());
-        customerList.add(TestData.createMockUser());
-        when(customerRepository.findAll()).thenReturn(customerList);
-        Iterable<Customer> response = userService.getAllUsers();
-        verify(customerRepository, times(1)).findAll();
-        assertEquals(2, response.spliterator().getExactSizeIfKnown());
-    }
-
-    @Test
-    void deleteUserById_Success() {
-        doNothing().when(customerRepository).deleteById(anyInt());
-        boolean status = userService.deleteUserById(anyInt());
-        verify(customerRepository, times(1)).deleteById(anyInt());
-        assertEquals(true, status);
-    }
-
-    @Test
-    void deleteUserById_Failure() {
-        doThrow(new IllegalArgumentException()).when(customerRepository).deleteById(anyInt());
-        boolean status = userService.deleteUserById(anyInt());
-        verify(customerRepository, times(1)).deleteById(anyInt());
-        assertEquals(false, status);
-    }
-
-    @Test
-    void addUser_Success() {
-        String body = "{\n" +
-                "\"age\": 30,\n" +
-                "\"email\": \"test@test.com\",\n" +
-                "\"name\": \"test\",\n" +
-                "\"postcode\": \"nr193dw\"\n" +
-                "}";
-
-        when(customerRepository.save(any())).thenReturn(any());
-        boolean response = userService.addUser(body);
-        verify(customerRepository, times(1)).save(any(Customer.class));
-        assertEquals(true, response);
-    }
-
-    @Test
-    void addUser_Failure() {
-        String request = "{\n" +
-                "\"age\": 9999,\n" +
-                "\"email\": \"polly@polly.com\",\n" +
-                "\"postcode\": \"nr193dw\"\n" +
-                "}";
-
-        doThrow(new IllegalArgumentException()).when(customerRepository).save(any(Customer.class));
-        boolean response = userService.addUser(request);
-        assertEquals(false, response);
-    }
 }

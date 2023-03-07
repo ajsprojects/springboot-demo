@@ -10,20 +10,22 @@ import javax.persistence.*;
 @Data
 @Entity
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+@AllArgsConstructor
+public class Address {
+
     @Id
+    @Column(name = "address_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "customer_id")
-    private Integer id;
+    private String addressId;
     @Column
-    private Integer age;
+    private String line1;
     @Column
-    private String name;
+    private String line2;
     @Column
-    private String email;
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    private String line3;
+    @Column
+    private String postcode;
+    @Column
+    private String country;
 }

@@ -18,12 +18,9 @@ public class Booking {
 
     @Id
     @Column(name = "booking_reference")
-    @GeneratedValue(strategy= GenerationType.AUTO)
     private String bookingReference;
-    @JoinColumn(name = "CUSTOMER_ID")
     @Column(name = "customer_id")
     private int customerId;
-    @JoinColumn(name = "HOLIDAY_id")
     @Column(name = "holiday_id")
     private int holidayId;
     @Column(name = "booking_date_time")
