@@ -54,9 +54,24 @@ public class CustomerService {
         List<com.example.springtest.web.dto.responses.Booking> bookingList = new ArrayList<>();
 
         if (!customerBookingEntities.isEmpty()) {
-            customerBookingEntities.stream().forEach(booking -> bookingList.add(com.example.springtest.web.dto.responses.Booking.builder().bookingReferenceId(booking.getBookingReference()).startDate(booking.getStartDate().toString()).endDate(booking.getEndDate().toString()).holidayName(holidayService.getHolidayDetails(booking.getHolidayId()).get().getHolidayName()).build()));
+            customerBookingEntities.stream().forEach(booking -> bookingList.add(com.example.springtest.web.dto.responses.Booking.builder()
+                    .bookingReferenceId(booking.getBookingReference()).startDate(booking.getStartDate().toString())
+                    .endDate(booking.getEndDate().toString())
+                    .holidayName(holidayService.getHolidayDetails(booking.getHolidayId()).get().getHolidayName())
+                    .build()));
         }
 
-        return CustomerDetailsResponse.builder().age(customer.getAge()).name(customer.getName()).email(customer.getEmail()).address(Address.builder().line1(customer.getAddress().getLine1()).line2(customer.getAddress().getLine2()).line3(customer.getAddress().getLine3()).postcode(customer.getAddress().getPostcode()).country(customer.getAddress().getCountry()).build()).bookings(bookingList).build();
+        return CustomerDetailsResponse.builder()
+                .age(customer.getAge())
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .address(Address.builder()
+                        .line1(customer.getAddress().getLine1())
+                        .line2(customer.getAddress().getLine2())
+                        .line3(customer.getAddress().getLine3())
+                        .postcode(customer.getAddress().getPostcode())
+                        .country(customer.getAddress().getCountry()).build())
+                .bookings(bookingList)
+                .build();
     }
 }

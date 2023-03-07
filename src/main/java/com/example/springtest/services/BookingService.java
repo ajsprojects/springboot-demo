@@ -31,7 +31,13 @@ public class BookingService {
         log.info("Booking holiday: " + bookingRequest);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-        Booking newBooking = Booking.builder().bookingReference(String.valueOf(bookingRequest.getCustomerRequest().hashCode() + holidayId)).customerId(bookingRequest.getCustomerRequest().getCustomerId()).holidayId(holidayId).bookingDateTime(LocalDateTime.parse(LocalDateTime.now().format(format))).startDate(bookingRequest.getStartDate()).endDate(bookingRequest.getEndDate()).bookingStatus(Status.ACTIVE).build();
+        Booking newBooking = Booking.builder()
+                .bookingReference(String.valueOf(bookingRequest.getCustomerRequest().hashCode() + holidayId))
+                .customerId(bookingRequest.getCustomerRequest().getCustomerId()).holidayId(holidayId)
+                .bookingDateTime(LocalDateTime.parse(LocalDateTime.now().format(format)))
+                .startDate(bookingRequest.getStartDate())
+                .endDate(bookingRequest.getEndDate())
+                .bookingStatus(Status.ACTIVE).build();
 
         bookingRepository.save(newBooking);
     }
@@ -54,7 +60,13 @@ public class BookingService {
     public List<BookingResponse> getAllBookings() {
         List<Booking> bookingEntities = bookingRepository.findAll();
 
-        return bookingEntities.stream().filter(Objects::nonNull).map(booking -> BookingResponse.builder().bookingReference(booking.getBookingReference()).bookingDateTime(booking.getBookingDateTime()).startDate(booking.getStartDate()).endDate(booking.getEndDate()).bookingStatus(booking.getBookingStatus()).customerName("test").build()).collect(Collectors.toList());
+        return bookingEntities.stream().filter(Objects::nonNull).map(booking -> BookingResponse.builder()
+                .bookingReference(booking.getBookingReference())
+                .bookingDateTime(booking.getBookingDateTime())
+                .startDate(booking.getStartDate())
+                .endDate(booking.getEndDate()).bookingStatus(booking.getBookingStatus())
+                .customerName("test").build())
+                .collect(Collectors.toList());
     }
 }
 

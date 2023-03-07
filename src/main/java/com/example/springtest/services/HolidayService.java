@@ -51,7 +51,15 @@ public class HolidayService {
     }
 
     private HolidayResponse buildHoliday(Holiday holiday) {
-        return HolidayResponse.builder().holidayName(holiday.getHolidayName()).description(holiday.getDescription()).flightsIncluded(holiday.isFlightsIncluded()).minimumAge(holiday.getMinimumAge()).country(holiday.getCountry()).price(new BigDecimal(String.valueOf(holiday.getPrice()))).id(holiday.getId()).build();
+        return HolidayResponse.builder()
+                .holidayName(holiday.getHolidayName())
+                .description(holiday.getDescription())
+                .flightsIncluded(holiday.isFlightsIncluded())
+                .minimumAge(holiday.getMinimumAge())
+                .country(holiday.getCountry())
+                .price(new BigDecimal(String.valueOf(holiday.getPrice())))
+                .id(holiday.getId())
+                .build();
     }
 }
 
