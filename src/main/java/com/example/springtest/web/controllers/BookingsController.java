@@ -56,5 +56,4 @@ public class BookingsController {
     public ResponseEntity cancelBooking(@PathVariable final String bookingReference) {
         return bookingService.cancelBooking(bookingReference);
     }
-
 }

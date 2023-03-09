@@ -26,7 +26,6 @@ class CustomerServiceTest {
 
     @Mock
     private CustomerRepository customerRepository;
-
     @Mock
     private BookingService bookingService;
     @Mock

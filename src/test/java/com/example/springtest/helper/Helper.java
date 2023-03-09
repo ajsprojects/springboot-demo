@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class Helper {
 
@@ -37,6 +39,42 @@ public class Helper {
                         .holidayName("holiday")
                         .build()))
                 .build();
+    }
+
+    public static List<HolidayResponse> buildFullListOfHolidays() {
+        return Arrays.asList(HolidayResponse.builder()
+                        .id(1)
+                        .holidayName("The young blast!")
+                        .description("An amazing holiday")
+                        .minimumAge(18).price(new BigDecimal(299.50))
+                        .flightsIncluded(true)
+                        .country(Country.ITALY)
+                        .resortAddress(null)
+                        .resortNotes(null)
+                        .build(),
+
+                HolidayResponse.builder()
+                        .id(2)
+                        .holidayName("The old blast!")
+                        .description("An amazing holiday")
+                        .minimumAge(55)
+                        .price(new BigDecimal(599.99))
+                        .flightsIncluded(true)
+                        .country(Country.UNITED_KINGDOM)
+                        .resortAddress(null)
+                        .resortNotes(null).build(),
+
+                HolidayResponse.builder()
+                        .id(3)
+                        .holidayName("The relaxing spanish holiday!")
+                        .description("An amazing holiday")
+                        .minimumAge(18)
+                        .price(new BigDecimal(599.00))
+                        .flightsIncluded(false)
+                        .country(Country.SPAIN)
+                        .resortAddress(null)
+                        .resortNotes(null)
+                        .build());
     }
 
     public static HolidayResponse buildHolidayResponse(final Country country) {

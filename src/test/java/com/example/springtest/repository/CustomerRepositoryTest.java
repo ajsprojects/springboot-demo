@@ -18,8 +18,8 @@ public class CustomerRepositoryTest {
 
     @Test
     void findByEmailReturnsCustomer() {
-        Optional<Customer> customer = customerRepository.findByEmail("thomas@thomas.com");
+        Optional<Customer> customer = customerRepository.findByEmail("email@email.com");
         assertTrue(customer.isPresent());
-        assertThat(customer.get().getEmail()).isEqualTo("thomas@thomas.com");
+        assertThat(customer.get().getEmail()).isEqualTo("email@email.com");
     }
 }
